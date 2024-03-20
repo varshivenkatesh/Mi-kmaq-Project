@@ -1,0 +1,137 @@
+/* import Bootstrap CSS from CDN */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css");
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css");
+@import url("https://fonts.googleapis.com/css?family=Comic+Neue");
+
+#start-page,
+#game-page {
+    display: flex;
+}
+
+#start-page {
+    margin-block: 19vh;
+}
+
+#game-page {
+    margin-block: 35vh;
+}
+#current-word {
+    background-image: url("../../../assets/client/plank.png");
+    background-repeat: no-repeat;
+    background-size: 100% 250px;
+    padding: 80px 100px;
+    text-align: center;
+    /*font-size: 90px;*/
+    font-size: 6em;
+    font-weight: 500;
+}
+#instructions-modal {
+    font-size: 25px;
+}
+
+body {
+    background-image: url("../../../assets/client/bg.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: "Comic Neue", sans-serif;
+}
+
+h1 {
+    color: rgb(223, 136, 176);
+    font-size: 130px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    line-height: 110px;
+    -webkit-text-stroke: 4px rgb(160, 55, 81);
+}
+
+.m-0 {
+    margin: 0;
+}
+
+.sub-title {
+    color: rgb(223, 136, 176);
+    font-size: 40px;
+}
+
+.menu-btn {
+    font-size: 70px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    color: rgb(230, 168, 55);
+    -webkit-text-stroke: 2px rgb(192, 92, 5);
+    /* -webkit-text-stroke: 2px rgb(182, 88, 1); */
+}
+
+.menu-btn:hover {
+    color: rgb(247, 116, 2);
+    /* -webkit-text-stroke: 2px rgb(230, 168, 55); */
+}
+
+.menu-btn:active {
+    color: rgb(230, 168, 55) !important;
+}
+
+.game-btn {
+    color: rgb(211, 116, 79);
+    font-size: 100px;
+    -webkit-text-stroke-width: 4px;
+}
+
+.game-btn:hover {
+    color: rgb(230, 168, 55);
+    /* -webkit-text-stroke: 2px rgb(230, 168, 55); */
+}
+
+.game-btn:active {
+    color: rgb(211, 116, 79) !important;
+}
+
+.game-img {
+    height: 350px;
+    width: 350px;
+}
+
+/* .modal-dialog {
+    overflow-y: initial;
+}
+.modal-body {
+    height: 250px;
+    overflow-y: auto;
+} */
+.preview-img {
+    height: 90px;
+    margin-right: 6px;
+}
+.preview-word {
+    margin-block: 8px;
+    font-size: 40px;
+}
+
+.word-bank-btn {
+    color: rgb(211, 116, 79);
+    font-size: 40px;
+    /* -webkit-text-stroke-width: 4px; */
+}
+
+.word-bank-btn:hover {
+    color: rgb(230, 168, 55);
+    /* -webkit-text-stroke: 2px rgb(230, 168, 55); */
+}
+
+.word-bank-btn:active {
+    color: rgb(211, 116, 79) !important;
+}
+
+/* A media query to detect smaller devices like tablets and phones and makes the right adjustments to fit them on screen*/
+@media (max-width: 768px) {
+    h1 {
+        font-size: 50px;
+    }
+
+    .button {
+        font-size: 50px;
+    }
+}

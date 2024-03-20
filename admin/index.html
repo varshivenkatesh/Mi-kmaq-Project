@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pictionary Admin</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/tippy.js@6/animations/scale.css"
+        />
+        <link rel="stylesheet" href="../src/client/css/admin.css" />
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"
+        ></script>
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+    </head>
+    <body x-data="adminData">
+        <div x-cloak x-show="!authenticated">
+            <header>
+                <h1>Admin Dashboard</h1>
+            </header>
+            <main>
+                <form id="authentication-form" @submit.prevent="authenticate">
+                    <header>
+                        <h2>Authentication Request</h2>
+                    </header>
+                    <label for="username">Username:</label>
+                    <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        x-model="username"
+                    />
+                    <label for="passphrase">Password:</label>
+                    <input
+                        :type="showPass ? 'text' : 'password'"
+                        name="passphrase"
+                        id="passphrase"
+                        x-model="passphrase"
+                    />
+                    <div>
+                        <input
+                            type="checkbox"
+                            @click="showPass = !showPass"
+                        />&nbsp;Show Password
+                    </div>
+                    <button type="submit" id="submit">Login</button>
+                </form>
+            </main>
+        </div>
+        <div
+            x-cloak
+            x-show="authenticated"
+            x-data="editorData"
+            id="editor-body"
+            x-init="fetchWordList"
+        >
+            <section id="editor-section">
+                <form
+                    :action="`${SERVER_URL}/upload`"
+                    enctype="multipart/form-data"
+                    method="POST"
+                    @submit="uploadConfirm"
+                >
+                    <div>
+                        <input
+                            id="word-text"
+                            type="text"
+                            name="fileName"
+                            :value="currentWord"
+                        />
+                        <p>(click the word above to edit)</p>
+                        <input
+                            id="word-text-old"
+                            type="text"
+                            name="oldName"
+                            :value="currentWord"
+                        />
+                    </div>
+                    <hr />
+                    <div>
+                        <audio
+                            controls
+                            :src="currentWordAudio ? currentWordAudio : audiosrc(currentWord)"
+                        >
+                            <a :href="audiosrc(currentWord)"></a>
+                        </audio>
+                        <div>
+                            <label for="word-audio"
+                                >Upload Audio (wav only):</label
+                            >
+
+                            <input
+                                type="file"
+                                id="word-audio"
+                                name="audioFile"
+                                accept=".wav"
+                                @change="updateAudioPreview"
+                            />
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <img
+                            :src="currentWordImage ? currentWordImage : imgsrc(currentWord)"
+                            :alt="currentWord"
+                            id="editor-section-img"
+                        />
+                        <div>
+                            <label for="word-image"
+                                >Upload Image (jpg only):</label
+                            >
+                            <input
+                                type="file"
+                                id="word-image"
+                                name="imageFile"
+                                accept=".jpg"
+                                @change="updateImagePreview"
+                            />
+                        </div>
+                    </div>
+                    <hr />
+                    <div>
+                        <button type="button" @click="cancelChanges">
+                            Cancel
+                        </button>
+                        <button type="submit">Save</button>
+                        <button type="button" @click="addNewWord">
+                            Add New Word
+                        </button>
+                    </div>
+                </form>
+            </section>
+            <fieldset id="editor-list">
+                <legend><h1>Word List</h1></legend>
+                <template x-for="(word, index) in wordList">
+                    <div class="editor-list-item">
+                        <input
+                            type="radio"
+                            :id="word"
+                            name="wordSelector"
+                            :value="word"
+                            x-model="currentWord"
+                            x-effect="index === 0 ? currentWord = word : null"
+                        />
+                        <label :for="word">
+                            <img
+                                :src="imgsrc(word)"
+                                :alt="word"
+                                class="editor-li-img"
+                            />&nbsp;<span x-text="word"></span>
+                        </label>
+                        <button
+                            type="button"
+                            @click="deleteConfirm(word, index)"
+                        >
+                            X
+                        </button>
+                    </div>
+                </template>
+            </fieldset>
+        </div>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
+        <script src="../src/client/js/admin.js"></script>
+    </body>
+</html>

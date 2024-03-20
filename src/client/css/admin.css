@@ -1,0 +1,91 @@
+@import url("https://unpkg.com/mvp.css@1.12/mvp.css");
+
+[x-cloak] {
+    display: none !important;
+}
+
+:root {
+    --editor-preview-width: 40vw;
+    --editor-wordlist-width: calc(100vw - var(--editor-preview-width));
+}
+
+#authentication-form {
+    margin-inline: auto;
+}
+
+#username,
+#passphrase {
+    width: 90%;
+}
+
+#editor-body {
+    overflow: hidden;
+}
+
+#editor-section {
+    float: left;
+    width: 40vw;
+    height: 90vh;
+    margin-block: 48px;
+}
+
+#editor-list {
+    float: right;
+    width: 50vw;
+    height: 90vh;
+    overflow: auto;
+    margin-inline: 50px;
+}
+
+#editor-section-img {
+    max-height: 200px;
+    max-width: 256px;
+}
+
+#editor-section-img ~ button {
+    display: block;
+}
+
+#editor-section > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 82vh;
+    width: 32vw;
+}
+
+#editor-section > form > hr {
+    margin-block: 30px;
+}
+
+#editor-section > form > div > div > input {
+    margin-inline: auto;
+}
+
+#word-text {
+    text-align: center;
+    font-weight: bold;
+    font-size: 2em;
+}
+
+#word-text-old {
+    display: none;
+}
+
+.editor-list-item > button {
+    --bg-color: crimson;
+    background-color: var(--bg-color);
+    border-color: var(--bg-color);
+    font-size: 12px;
+    padding: 4px;
+}
+
+.editor-li-img {
+    height: 40px;
+}
+
+label[for="word-image"],
+label[for="word-audio"] {
+    color: crimson;
+}
