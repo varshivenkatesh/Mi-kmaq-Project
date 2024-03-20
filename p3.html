@@ -1,0 +1,328 @@
+<!--
+Purpose: A bootstrap grid is used to display everything on screen from the question, images,
+correct & incorrect display screens and the replay button.
+
+Author(s) / Work Done: Basel Allam - Main HTML structure and grid body, 
+                       Josh Cole - Completed the grid and added all the stuff required for the drag and drop API 
+                       Bhaumik Vyas - Added the replay button and its function
+                       Varshitha Venkatesh - Created User Profile, fixed issues with 'Select Grid Option' button, 
+                       and added new images and audios
+
+-->
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <!-- Sets what appears in the window tab -->
+    <title>Home</title>
+    <!-- For the browser to display the page correctly the character 
+       encoding must be made known to the browser. Each character
+       has a unique value or code as mapped in UTF-8 -->
+    <meta charset="UTF-8" />
+    <!-- Sets width to the width of the device at scale 1:1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Make Bootstrap styles accessible to this file  -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <!-- Make icon library available for home button -->
+    <link
+		    rel="stylesheet"
+		    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <!-- make these styles available to this file -->
+    <link href="./css/p3.css" rel="stylesheet" />
+    <!-- Make the jQuery library available to this file -->
+    <script src="./scripts/jquery-3.6.0.js"></script>
+    <!-- make the JavaScript file available to this file -->
+    <script src="./scripts/p3.js"></script>
+    <!-- make the JavaScript file required for touch controls available to this file -->
+    <script src="./scripts/TouchControls.js"></script>
+  </head>
+
+  <!-- Loading the first question into queue while displaying the starting score of 0/0 -->
+  <body onload="startAgain(), startScore()">
+    <div class="wrapper">
+    <div class="center-container">
+      <button type="button" class="btn btn-success" onclick="displayProfile()" id="profileButton">
+              <img id="defAvatar" src="./images/apple.png" alt="Profile Picture">
+              <p id="outputText"></p>
+      </button>
+  </div>
+</div>
+</div>
+<div id="profile-modal">
+      <div class="modal-content">
+
+          <!-- Modal Header should allow Edit Profile-->
+          <div class="modal-header">
+              <h4 class="modal-title">Profile</h4>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+              <label for="userName">Name: </label>
+              <input type="text" id="userName" placeholder="Type your name">
+
+              <label for="userAge">Age: </label>
+              <input type="text" id="userAge" placeholder="Type your age">
+          </div>
+
+          <!-- Modal Footer should have Save & Close-->
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" onclick="saveAndClose()">Save & Close</button>
+          </div>
+      </div>
+  </div>
+    <br />
+    <!-- Container class for the bootstrap grid-->
+    <div class="container">
+
+	<!--Row for home button-->
+		<button class="btn">
+<a class="fa fa-home" href="index.html"> Home</a></button>
+		<!-- Row containing dropdown to select the number of columns -->
+      <div class="row g-0">
+	      <div class="col-3">      
+	      <h3 for="columnSelect"><strong>Select grid size:</strong></h3>        
+	      <select id="columnSelect" onclick="createGrid(value)">
+            <option value="" disabled selected>Select an option</option>
+            <!-- gridsize options -->
+            <option value="2">2x2</option>
+            <option value="3">3x3</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- First row that has the question and microphone button -->
+      <div class="row g-0">
+        <div class="col-3"></div>
+        <!-- Mic button to play the word when clicked -->
+        <div class="col-1">
+          <input
+            id="vol"
+            class="btn slim"
+            type="image"
+            src="./images/vol.png"
+            draggable="false"
+            onclick="playAudio()"
+            style="display: none"
+          />
+        </div>
+        <!-- An empty div to insert the question into using JS -->
+        <div id="question" class="col-2 question" style="display: none"></div>
+        <!-- An empty div to position the score correctly -->
+        <div class="col-2"></div>
+        <!-- A button to ask the user to click their score and another id to display the score as it changes
+      and posting the score to the server -->
+        <div class="col-3">
+          <button
+            class="btn"
+            id="score"
+            draggable="false"
+            onclick="halfStart(), post()"
+          >
+            click your score: <span id="mySpan"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Second row containg the repeat button -->
+      <div class="row g-0">
+        <div class="col-5"></div>
+        <!-- The button to restart the game and get the score from the server -->
+        <div class="col-3">
+          <button
+            class="btn slim"
+            id="restart"
+            onclick="startAgain(), get()"
+            draggable="false"
+            style="display: none"
+          >
+            si'owa'si?
+          </button>
+        </div>
+      </div>
+
+      <!-- Third row (first row of images) -->
+      <div class="row g-0">
+        <!-- The first star displayed when a correct answer is chosen -->
+        <div class="col-2">
+          <img
+            id="star1"
+            src="./images/star.png"
+            alt=""
+            style="display: none"
+            draggable="false"
+          />
+        </div>
+        <!-- An empty div to align the star properly -->
+        <div class="col-1"></div>
+        <!-- The first row of images -->
+        <div
+          id="cell1"
+          class="col-2"
+          ondrop="drop(event,1,cell1)"
+          ondragover="allowDrop(event,1)"
+        >
+          <img id="image1" src="./images/wiktm.png" alt="" draggable="false" />
+        </div>
+        <div
+          id="cell2"
+          class="col-2"
+          ondrop="drop(event,2,cell2)"
+          ondragover="allowDrop(event,2)"
+        >
+          <img
+            id="image2"
+            src="./images/teluisi.png"
+            alt=""
+            draggable="false"
+          />
+        </div>
+        <div
+          id="cell3"
+          class="col-2"
+          ondrop="drop(event,3,cell3)"
+          ondragover="allowDrop(event,3)"
+        >
+          <img id="image3" src="./images/nin.png" alt="" draggable="false" />
+        </div>
+        <!-- An empty div to align the sun properly -->
+        <div class="col-1"></div>
+        <!-- The first sun displayed when an incorrect answer is chosen -->
+        <div class="col-2">
+          <img
+            id="sun1"
+            src="./images/sun.png"
+            alt=""
+            s="drag(event)"
+            style="display: none"
+            draggable="false"
+          />
+        </div>
+      </div>
+
+      <!-- Fourth row (second row of images)-->
+      <div class="row g-0">
+        <div class="col-0"></div>
+        <!-- A div for the draggable bear and the text displayed when an correct answer is chosen -->
+        <div id="bearcell" class="col-2 bear">
+          <img
+            id="bear"
+            src="./images/pointer.png"
+            alt=""
+            ondragstart="drag(event)"
+            draggable="false"
+          />
+          <img
+            id="correctText"
+            src="./images/successText.jpg"
+            alt=""
+            s="drag(event)"
+            style="display: none"
+            draggable="false"
+          />
+        </div>
+        <!-- An empty div to align the images properly -->
+        <div class="col-1"></div>
+        <!-- The second row of images -->
+        <div
+          id="cell4"
+          class="col-2"
+          ondrop="drop(event,4,cell4)"
+          ondragover="allowDrop(event,4)"
+        >
+          <img id="image4" src="./images/mijisi.png" alt="" draggable="false" />
+        </div>
+        <div
+          id="cell5"
+          class="col-2"
+          ondrop="drop(event,5,cell5)"
+          ondragover="allowDrop(event,5)"
+        >
+          <img id="image5" src="./images/ltu.png" alt="" draggable="false" />
+        </div>
+        <div
+          id="cell6"
+          class="col-2"
+          ondrop="drop(event,6,cell6)"
+          ondragover="allowDrop(event,6)"
+        >
+          <img id="image6" src="./images/kil.png" alt="" draggable="false" />
+        </div>
+        <!-- An empty div for alignment -->
+        <div class="col-1"></div>
+        <!-- The text displayed when an incorrect option is chosen -->
+        <div class="col-2">
+          <img
+            id="incorrectText"
+            src="./images/oopsText.jpg"
+            alt=""
+            s="drag(event)"
+            style="display: none"
+            draggable="false"
+          />
+        </div>
+      </div>
+
+      <!-- Fifth row (Third row of images) -->
+      <div class="row g-0">
+        <!-- The second star displayed when a correct answer is chosen -->
+        <div class="col-2">
+          <img
+            id="star2"
+            src="./images/star.png"
+            alt=""
+            style="display: none"
+            draggable="false"
+          />
+        </div>
+        <!-- An empty div for alingment -->
+        <div class="col-1"></div>
+        <!-- The third row of images -->
+        <div
+          id="cell7"
+          class="col-2"
+          ondrop="drop(event,7,cell7)"
+          ondragover="allowDrop(event,7)"
+        >
+          <img id="image7" src="./images/kesalk.png" alt="" draggable="false" />
+        </div>
+        <div
+          id="cell8"
+          class="col-2"
+          ondrop="drop(event,8,cell8)"
+          ondragover="allowDrop(event,8)"
+        >
+          <img id="image8" src="./images/eliey.png" alt="" draggable="false" />
+        </div>
+        <div
+          id="cell9"
+          class="col-2"
+          ondrop="drop(event,9,cell9)"
+          ondragover="allowDrop(event,9)"
+        >
+          <img id="image9" src="./images/aqq.png" alt="" draggable="false" />
+        </div>
+        <!-- An empty div for alignment -->
+        <div class="col-1"></div>
+        <!-- The second sun displayed when an incorrect answer is chosen-->
+        <div class="col-2">
+          <img
+            id="sun2"
+            src="./images/sun.png"
+            alt=""
+            s="drag(event)"
+            style="display: none"
+            draggable="false"
+          />
+        </div>
+      </div>
+    </div>
+    </div>
+  </body>
+</html>
